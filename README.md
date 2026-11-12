@@ -1,6 +1,6 @@
 Trackfix is a small tool to force reinitialization of Synaptics devices. This will hopefully fix frozen TrackPoint on devices such as ThinkPad T14, P14s, X13 series etc. without requiring a reboot. This is for Windows computers. I have not encountered this issue in Linux so I'm unsure if a workaround is even needed there.
 
-Just run the tool and hopefully your frozen device will be found and reinitialized.
+Just run the tool and your frozen device should be found and reinitialized.
 
 Or build it yourself.
 
