@@ -26,4 +26,4 @@ Compile for the architecture of the registered Synaptics COM server.
 
 This tool is **FREEWARE**. Do with it as you wish. Or don't. I'm not your mom.
 
-(c)2026 Marcus Hoffren
+By Marcus Hoffren 2026
