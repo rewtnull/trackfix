@@ -14,11 +14,11 @@ gcc -std=c11 -O2 -Wall -Wextra -Werror trackfix.c -o trackfix.exe -lole32 -lolea
 
 You will need gcc and make installed through msys2.
 
-**VS x64 Native Tools Command Prompt:**
+**Visual Studio**
 
 Use the included project files
 
-Or
+Or through x64 Native Tools Command Prompt:
 
 cl /nologo /TC /std:c11 /O2 /W4 /WX /Fe:trackfix.exe trackfix.c ole32.lib oleaut32.lib uuid.lib
 
