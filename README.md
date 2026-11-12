@@ -4,13 +4,15 @@ Just run the tool and hopefully your frozen device will be found and reinitializ
 
 Or build it yourself.
 
-**MinGW-w64 GCC:**
+**MSYS2 MinGW-w64 GCC:**
 
 PS C:\> Make
 
 Or
 
 gcc -std=c11 -O2 -Wall -Wextra -Werror trackfix.c -o trackfix.exe -lole32 -loleaut32 -luuid -luser32
+
+You will need gcc and make installed through msys2.
 
 **VS x64 Native Tools Command Prompt:**
 
