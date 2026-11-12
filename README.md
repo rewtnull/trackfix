@@ -4,12 +4,12 @@ Just run the tool and hopefully your frozen device will be found and reinitializ
 
 Or build it yourself.
 
-**MinGW-w64 GCC:
-**
+**MinGW-w64 GCC:**
+
 gcc -std=c11 -O2 -Wall -Wextra -Werror trackfix.c -o trackfix.exe -lole32 -loleaut32 -luuid -luser32
 
-**VS x64 Native Tools Command Prompt:
-**
+**VS x64 Native Tools Command Prompt:**
+
 cl /nologo /TC /std:c11 /O2 /W4 /WX /Fe:trackfix.exe trackfix.c ole32.lib oleaut32.lib uuid.lib
 
 Compile for the architecture of the registered Synaptics COM server.
