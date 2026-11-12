@@ -6,9 +6,17 @@ Or build it yourself.
 
 **MinGW-w64 GCC:**
 
+PS C:\> Make
+
+Or
+
 gcc -std=c11 -O2 -Wall -Wextra -Werror trackfix.c -o trackfix.exe -lole32 -loleaut32 -luuid -luser32
 
 **VS x64 Native Tools Command Prompt:**
+
+Use the included project files
+
+Or
 
 cl /nologo /TC /std:c11 /O2 /W4 /WX /Fe:trackfix.exe trackfix.c ole32.lib oleaut32.lib uuid.lib
 
