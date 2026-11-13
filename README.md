@@ -6,7 +6,7 @@ Or build it yourself.
 
 **MSYS2 MinGW-w64 GCC:**
 
-PS C:\\code\\> Make
+PS C:\\code\\> make
 
 Or
 
