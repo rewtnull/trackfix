@@ -84,13 +84,10 @@ static BOOL wait_for_enter(void)
     char character;
     DWORD received;
 
-    if (input == INVALID_HANDLE_VALUE || input == NULL) {
-        return FALSE;
-    }
+    if (input == INVALID_HANDLE_VALUE || input == NULL) return FALSE;
+
     while (ReadFile(input, &character, 1, &received, NULL) && received == 1) {
-        if (character == '\r' || character == '\n') {
-            return TRUE;
-        }
+        if (character == '\r' || character == '\n') return TRUE;
     }
     return FALSE;
 }
@@ -104,9 +101,8 @@ static HRESULT com_create(const WCHAR *name, IDispatch **object)
 
     *object = NULL;
     result = CLSIDFromProgID(name, &clsid);
-    if (FAILED(result)) {
-        return result;
-    }
+    if (FAILED(result)) return result;
+
     return CoCreateInstance(&clsid, NULL,
                             CLSCTX_INPROC_SERVER | CLSCTX_LOCAL_SERVER,
                             &IID_IDispatch, (void **)object);
@@ -131,22 +127,19 @@ static HRESULT com_invoke(IDispatch *object, DISPID id, const LONG *values,
     HRESULT status;
     UINT i;
 
-    if (count > 3 || (count != 0 && values == NULL)) {
-        return E_INVALIDARG;
-    }
+    if (count > 3 || (count != 0 && values == NULL)) return E_INVALIDARG;
+
     for (i = 0; i < count; ++i) {
         VariantInit(&arguments[i]);
         arguments[i].vt = VT_I4;
         arguments[i].lVal = values[count - i - 1];
     }
-    if (result != NULL) {
-        VariantInit(result);
-    }
+    if (result != NULL) VariantInit(result);
+
     status = object->lpVtbl->Invoke(object, id, &IID_NULL, LOCALE_USER_DEFAULT,
                                     DISPATCH_METHOD, &params, result, NULL, NULL);
-    if (FAILED(status) && result != NULL) {
-        VariantClear(result);
-    }
+    if (FAILED(status) && result != NULL) VariantClear(result);
+
     return status;
 }
 
@@ -158,14 +151,12 @@ static HRESULT com_long(IDispatch *object, DISPID id, const LONG *arguments,
     VARIANT converted;
     HRESULT status = com_invoke(object, id, arguments, count, &result);
 
-    if (FAILED(status)) {
-        return status;
-    }
+    if (FAILED(status)) return status;
+
     VariantInit(&converted);
     status = VariantChangeType(&converted, &result, 0, VT_I4);
-    if (SUCCEEDED(status)) {
-        *value = converted.lVal;
-    }
+    if (SUCCEEDED(status)) *value = converted.lVal;
+
     VariantClear(&converted);
     VariantClear(&result);
     return status;
@@ -181,9 +172,8 @@ static HRESULT com_string(IDispatch *object, DISPID id, LONG property, BSTR *val
 
     *value = NULL;
     status = com_invoke(object, id, &property, 1, &result);
-    if (FAILED(status)) {
-        return status;
-    }
+    if (FAILED(status)) return status;
+
     VariantInit(&converted);
     status = VariantChangeType(&converted, &result, 0, VT_BSTR);
     if (SUCCEEDED(status)) {
@@ -242,13 +232,10 @@ static HRESULT synaptics_device_info(const SynapticsDevice *device,
 
     ZeroMemory(info, sizeof(*info));
     result = com_invoke(device->object, device->select, &handle, 1, NULL);
-    if (FAILED(result)) {
-        return result;
-    }
+    if (FAILED(result)) return result;
+
     result = com_invoke(device->object, device->activate, NULL, 0, NULL);
-    if (FAILED(result)) {
-        return result;
-    }
+    if (FAILED(result)) return result;
 
     property = PROP_DEVICE_TYPE;
     result = com_long(device->object, device->get_long, &property, 1, &info->type);
@@ -284,9 +271,7 @@ static void console_device(HANDLE output, const DeviceInfo *info,
     console_write(output, L"]: ");
     console_write(output, info->model != NULL ? info->model : L"");
     console_write(output, L"\r\n");
-    if (colored) {
-        SetConsoleTextAttribute(output, attributes);
-    }
+    if (colored) SetConsoleTextAttribute(output, attributes);
 }
 
 /* Enumerate Synaptics devices, print each entry, and count TrackPoints.
@@ -306,21 +291,17 @@ static HRESULT synaptics_list_devices(const SynapticsApi *api,
         DeviceInfo info = { 0 };
 
         result = com_long(api->object, api->find_device, query, 3, &handle);
-        if (FAILED(result) || handle == -1) {
-            return result;
-        }
+        if (FAILED(result) || handle == -1) return result;
+
         result = synaptics_device_info(device, handle, &info);
         if (SUCCEEDED(result)) {
             ++*device_count;
-            if (info.type == TRACKPOINT_TYPE) {
-                ++*trackpoint_count;
-            }
+            if (info.type == TRACKPOINT_TYPE) ++*trackpoint_count;
+
             console_device(output, &info, attributes, colored);
         }
         device_info_free(&info);
-        if (FAILED(result)) {
-            return result;
-        }
+        if (FAILED(result)) return result;
     }
 }
 
